@@ -10,7 +10,7 @@ RUN mkdir -p /etc/wireguard /var/log/wireguard
 ENV SERVER_PORT=51820/udp \
     SERVER_IP=0.0.0.0
 
-EXPOSE $SERVER_PORT
+EXPOSE 51280
 
 VOLUME /etc/wireguard
 

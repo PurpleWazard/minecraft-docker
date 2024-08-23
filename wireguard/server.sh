@@ -26,7 +26,7 @@ if [ ! -f "$WG_CONFIG" ]; then
 [Interface]
 PrivateKey = $(cat $PRIVATE_KEY_FILE)
 Address = 10.0.0.1/24
-ListenPort = ${SERVER_PORT:-51820}
+ListenPort = 51820
 EOF
     if [ -n "$CLIENT_PUBLIC_KEY" ]; then
       echo "[Peer]" >> /etc/wireguard/wg0.conf

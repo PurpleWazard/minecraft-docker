@@ -3,9 +3,8 @@ services:
   wireguard:
     build: .
     environment:
-      - SERVER_PORT=${SERVER_PORT:-51820}
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}/udp"
+      - 51820:51820/udp
     volumes:
       - ./config:/etc/wireguard
     secrets:
