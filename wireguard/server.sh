@@ -30,14 +30,15 @@ PrivateKey = $(cat $PRIVATE_KEY_FILE)
 Address = 10.0.0.1/24
 ListenPort = 51820
 EOF
+
+echo "[Peer]" >> /etc/wireguard/wg0.conf
+echo  "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
     if [ -n "$CLIENT_PUBLIC_KEY" ]; then
-      echo "[Peer]" >> /etc/wireguard/wg0.conf
-      echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
-      echo  "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
-    else
       echo "CLIENT_PUBLIC_KEY environment variable is not set."
       exit 1
     fi
+echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
+
 else
     echo "Using existing WireGuard configuration..."
 fi
