@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   wireguard:
     build: .
@@ -9,7 +8,7 @@ services:
     volumes:
       - ./config:/etc/wireguard
     secrets:
-      - client_public_key
+      - client_pub_key
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -18,8 +17,6 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv6.conf.all.forwarding=1
     privileged: true
-    secrets:
-      - client_public_key
 
 secrets:
   client_pub_key:

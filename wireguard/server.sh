@@ -5,12 +5,8 @@ PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 WG_LOG_FILE="/etc/wireguard/wireguard.log"
+CLIENT_KEY=$(cat "$CLIENT_KEY")
 
-echo "$CLIENT_KEY"
-echo "$CLIENT_KEY"
-echo "$CLIENT_KEY"
-echo "$CLIENT_KEY"
-echo "$CLIENT_KEY"
 
 # Function to generate keys
 generate_keys() {
@@ -59,6 +55,6 @@ if [ ! -f "$WG_LOG_FILE" ]; then
     echo "this is the log file" >> "$WG_LOG_FILE"
 fi
 
-# Keep the container running
-tail -f "$WG_LOG_FILE"
+
+sleep forever
 
