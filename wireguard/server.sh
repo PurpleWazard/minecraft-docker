@@ -5,7 +5,6 @@ PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 WG_LOG_FILE="/etc/wireguard/wireguard.log"
-CLIENT_PUBLIC_KEY=$(cat /run/secrets/client_public_key)
 
 # Function to generate keys
 generate_keys() {
@@ -21,7 +20,7 @@ else
     echo "Using existing WireGuard keys..."
 fi
 
-if [ -n "$CLIENT_PUBLIC_KEY" ]; then
+if [ -n "$CLIENT_KEY" ]; then
     exit 1
 fi
 
@@ -34,7 +33,7 @@ if [ ! -f "$WG_CONFIG" ]; then
     echo "ListenPort = 51820" >> "$WG_CONFIG"
     echo "[Peer]" >> /etc/wireguard/wg0.conf
     echo "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
-    echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
+    echo "PublicKey = $CLIENT_KEY" >> /etc/wireguard/wg0.conf
 
 else
     echo "Using existing WireGuard configuration..."

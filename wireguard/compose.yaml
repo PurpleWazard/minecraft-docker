@@ -3,7 +3,7 @@ services:
   wireguard:
     build: .
     environment:
-      - CLIENT_KEY: /run/secrets/client_public_key
+      CLIENT_KEY: /run/secrets/client_public_key
     ports:
       - 51820:51820/udp
     volumes:
