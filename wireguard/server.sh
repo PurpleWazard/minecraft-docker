@@ -21,23 +21,20 @@ else
     echo "Using existing WireGuard keys..."
 fi
 
+if [ -n "$CLIENT_PUBLIC_KEY" ]; then
+    exit 1
+fi
+
 # Create WireGuard configuration if it doesn't exist
 if [ ! -f "$WG_CONFIG" ]; then
     echo "Creating WireGuard configuration..."
-    cat <<EOF > "$WG_CONFIG"
-[Interface]
-PrivateKey = $(cat $PRIVATE_KEY_FILE)
-Address = 10.0.0.1/24
-ListenPort = 51820
-EOF
-
-echo "[Peer]" >> /etc/wireguard/wg0.conf
-echo  "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
-    if [ -n "$CLIENT_PUBLIC_KEY" ]; then
-      echo "CLIENT_PUBLIC_KEY environment variable is not set."
-      exit 1
-    fi
-echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
+    echo "[Interface]" >> "$WG_CONFIG"
+    echo "PrivateKey = $(cat $PRIVATE_KEY_FILE)" >> "$WG_CONFIG"
+    echo "Address = 10.0.0.1/24" >> "$WG_CONFIG"
+    echo "ListenPort = 51820" >> "$WG_CONFIG"
+    echo "[Peer]" >> /etc/wireguard/wg0.conf
+    echo "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
+    echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
 
 else
     echo "Using existing WireGuard configuration..."
