@@ -7,10 +7,10 @@ RUN apt-get update && \
 
 RUN mkdir -p /etc/wireguard /var/log/wireguard
 
-ENV SERVER_PORT=51820/udp \
+ENV SERVER_PORT=51820 \
     SERVER_IP=0.0.0.0
 
-EXPOSE 51280
+EXPOSE 51820/udp
 
 VOLUME /etc/wireguard
 
@@ -18,9 +18,5 @@ COPY server.sh /usr/local/bin/server.sh
 
 RUN chmod +x /usr/local/bin/server.sh
 
-RUN which sysctl
-
-
 ENTRYPOINT ["/usr/local/bin/server.sh"]
-
 

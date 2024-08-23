@@ -2,9 +2,9 @@ services:
   wireguard:
     build: .
     environment:
-      CLIENT_KEY: /run/secrets/client_pub_key
+      SERVER_PORT: 51820
     ports:
-      - 51820:51820/udp
+      - "51820:51820/udp"
     volumes:
       - ./config:/etc/wireguard
     secrets:
