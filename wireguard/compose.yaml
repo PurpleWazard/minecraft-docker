@@ -2,6 +2,8 @@ version: '3.8'
 services:
   wireguard:
     build: .
+    environment:
+      - CLIENT_KEY: /run/secrets/client_public_key
     ports:
       - 51820:51820/udp
     volumes:
