@@ -51,8 +51,9 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 echo "this is the publickey: $(cat $PUBLIC_KEY_FILE )"
 wg-quick up wg0
 
-if [ ! -f "$WG_LOG_FILE"]; then
+if [ ! -f "$WG_LOG_FILE" ]; then
     touch "$WG_LOG_FILE"
+    echo "this is the log file" >> "$WG_LOG_FILE"
 fi
 
 # Keep the container running
