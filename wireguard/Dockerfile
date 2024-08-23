@@ -15,7 +15,6 @@ EXPOSE $SERVER_PORT
 VOLUME /etc/wireguard
 
 COPY server.sh /usr/local/bin/server.sh
-COPY clientkey /etc/wireguard/clientkey
 
 RUN chmod +x /usr/local/bin/server.sh
 

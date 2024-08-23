@@ -8,7 +8,7 @@ services:
     volumes:
       - ./config:/etc/wireguard
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}/upd"
+      - "${SERVER_PORT}:${SERVER_PORT}/udp"
     secrets:
       - client_public_key
     restart: unless-stopped
