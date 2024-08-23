@@ -57,6 +57,8 @@ if [ ! -f "$WG_LOG_FILE" ]; then
     echo "this is the log file" >> "$WG_LOG_FILE"
 fi
 
+echo "server public key: $PUBLIC_KEY_FILE"
+
 # Keep the container running
 tail -f /dev/null
 
