@@ -4,7 +4,6 @@ CONFIG_DIR="/etc/wireguard"
 PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
-CLIENTKEY="$CONFIG_DIR/clientkey"
 
 # Function to generate keys
 generate_keys() {
@@ -28,15 +27,21 @@ if [ ! -f "$WG_CONFIG" ]; then
 PrivateKey = $(cat $PRIVATE_KEY_FILE)
 Address = 10.0.0.1/24
 ListenPort = ${SERVER_PORT:-51820}
-
-# Add peers here
-# [Peer]
-# PublicKey = $(cat $CLIENTKEY)
-# AllowedIPs = 10.0.0.2/32
 EOF
+    if [ -n "$CLIENT_PUBLIC_KEY" ]; then
+      echo "[Peer]" >> /etc/wireguard/wg0.conf
+      echo "PublicKey = $CLIENT_PUBLIC_KEY" >> /etc/wireguard/wg0.conf
+      echo  "AllowedIPs = 10.0.0.2/32" >> /etc/wireguard/wg0.conf
+    else
+      echo "CLIENT_PUBLIC_KEY environment variable is not set."
+      exit 1
+    fi
 else
     echo "Using existing WireGuard configuration..."
 fi
+
+
+
 
 # Enable IP forwarding
 sysctl -w net.ipv4.ip_forward=1

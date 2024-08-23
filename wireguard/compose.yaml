@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  wireguard:
+    build: .
+    environment:
+      - CLIENT_PUBLIC_KEY=${CLIENT_PUBLIC_KEY}
+      - SERVER_PORT=51820
+    volumes:
+      - ./config:/etc/wireguard
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}/upd"
+    secrets:
+      - client_public_key
+    restart: unless-stopped
+
+secrets:
+  client_public_key:
+    file: ./client-public-key.txt
+
