@@ -5,7 +5,7 @@ PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 
-WG_LOG_FILE="/var/log/wireguard.log"
+WG_LOG_FILE="/etc/wireguard/wireguard.log"
 
 # Function to generate keys
 generate_keys() {
@@ -43,13 +43,6 @@ else
 fi
 
 
-export PATH=$PATH:/sbin:/usr/sbin
-sysctl net.ipv4.ip_forward=1
-
-/usr/sbin/sysctl net.ipv4.ip_forward=1
-
-
-
 # Enable IP forwarding
 sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
@@ -63,5 +56,5 @@ if [ ! -f "$WG_LOG_FILE"]; then
 fi
 
 # Keep the container running
-tail -f /var/log/wireguard/wg.log
+tail -f "$WG_LOG_FILE"
 
