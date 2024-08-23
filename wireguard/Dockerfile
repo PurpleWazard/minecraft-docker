@@ -1,0 +1,24 @@
+FROM debian:latest-slim
+
+RUN apt-get update && \
+    apt-get install -y wireguard-tools iproute2 qrencode && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/wireguard /var/log/wireguard
+
+ENV SERVER_PORT=51820/udp \
+    SERVER_IP=0.0.0.0
+
+EXPOSE $SERVER_PORT
+
+VOLUME /etc/wireguard
+
+COPY server.sh /usr/local/bin/server.sh
+COPY clientkey /etc/wireguard/clientkey
+
+RUN chmod +x /usr/local/bin/server.sh
+
+ENTRYPOINT ["/usr/local/bin/server.sh"]
+
+
