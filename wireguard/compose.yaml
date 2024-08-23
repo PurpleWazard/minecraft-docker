@@ -3,8 +3,7 @@ services:
   wireguard:
     build: .
     environment:
-      - SERVER_PORT=51820
-      - CLIENT_PUBLIC_KEY=${CLIENT_PUBLIC_KEY}  # Define other variables as needed
+      - SERVER_PORT=${SERVER_PORT:-51820}
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}/udp"
     volumes:
