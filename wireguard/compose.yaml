@@ -1,6 +1,7 @@
 services:
   wireguard:
     build: .
+    network_mode: "host"
     environment:
       SERVER_PORT: 51820
     ports:
