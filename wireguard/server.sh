@@ -4,8 +4,8 @@ CONFIG_DIR="/etc/wireguard"
 PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
-
 WG_LOG_FILE="/etc/wireguard/wireguard.log"
+CLIENT_PUBLIC_KEY=$(cat /run/secrets/client_public_key)
 
 # Function to generate keys
 generate_keys() {
