@@ -6,6 +6,12 @@ PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 WG_LOG_FILE="/etc/wireguard/wireguard.log"
 
+echo "$CLIENT_KEY"
+echo "$CLIENT_KEY"
+echo "$CLIENT_KEY"
+echo "$CLIENT_KEY"
+echo "$CLIENT_KEY"
+
 # Function to generate keys
 generate_keys() {
     umask 077
