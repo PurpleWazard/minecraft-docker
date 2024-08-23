@@ -2,13 +2,13 @@ version: '3.8'
 services:
   wireguard:
     build: .
-    environment:
-      - CLIENT_PUBLIC_KEY=${CLIENT_PUBLIC_KEY}
-      - SERVER_PORT=51820
+  environment:
+    - SERVER_PORT=51820
+    - CLIENT_PUBLIC_KEY=${CLIENT_PUBLIC_KEY}  # Define other variables as needed
+  ports:
+    - "${SERVER_PORT}:${SERVER_PORT}/udp"
     volumes:
       - ./config:/etc/wireguard
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}/udp"
     secrets:
       - client_public_key
     restart: unless-stopped

@@ -48,6 +48,7 @@ sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 
 # Start the WireGuard interface
+echo $PUBLIC_KEY_FILE
 wg-quick up wg0
 
 # Keep the container running
