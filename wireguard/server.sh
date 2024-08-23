@@ -5,6 +5,8 @@ PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
 PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 
+WG_LOG_FILE="/var/log/wireguard.log"
+
 # Function to generate keys
 generate_keys() {
     umask 077
@@ -41,6 +43,11 @@ else
 fi
 
 
+export PATH=$PATH:/sbin:/usr/sbin
+sysctl net.ipv4.ip_forward=1
+
+/usr/sbin/sysctl net.ipv4.ip_forward=1
+
 
 
 # Enable IP forwarding
@@ -50,6 +57,10 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 # Start the WireGuard interface
 echo "this is the publickey: $PUBLIC_KEY_FILE "
 wg-quick up wg0
+
+if [ ! -f "$WG_LOG_FILE"]; then
+    touch "$WG_LOG_FILE"
+fi
 
 # Keep the container running
 tail -f /var/log/wireguard/wg.log

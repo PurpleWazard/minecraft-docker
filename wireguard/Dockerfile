@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && \
-    apt-get install -y wireguard-tools procps iproute2 qrencode && \
+    apt-get install -y wireguard-tools procps iproute2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -17,6 +17,9 @@ VOLUME /etc/wireguard
 COPY server.sh /usr/local/bin/server.sh
 
 RUN chmod +x /usr/local/bin/server.sh
+
+RUN which sysctl
+
 
 ENTRYPOINT ["/usr/local/bin/server.sh"]
 
