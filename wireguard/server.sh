@@ -41,7 +41,7 @@ fi
 
 cat <<EOF > "$WG_CONFIG"
 [Interface]
-PrivateKey = $(cat "$KEY_PRIVATE")
+PrivateKey = $KEY_PRIVATE
 Address = 10.0.0.1/24
 ListenPort = 51820
 
@@ -57,8 +57,6 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 
 # Start the WireGuard interface
 wg-quick up wg0
-
-echo "server public key: $(cat $KEY_PUBLIC)"
 
 # Keep the container running
 tail -f /dev/null
