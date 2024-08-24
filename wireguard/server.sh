@@ -1,36 +1,35 @@
 #!/bin/bash
-
 CONFIG_DIR="/etc/wireguard"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 PUB_FILE="$CONFIG_DIR/public"
 PRI_FILE="$CONFIG_DIR/private"
-KEY_PUBLIC="$KEY_PUBLIC"
-KEY_PRIVATE="$KEY_PRIVATE"
-
 CLIENT_KEY="$CLIENT_KEY"
 
+# Check if the key files exist
+if [ ! -f "$PUB_FILE" ] || [ ! -f "$PRI_FILE" ]; then
 
-
-if [ ! -f "$PUB_FILE" ] && [ ! -f "$PRI_FILE" ]; then
-
+    # Generate new keys if private key is not provided
     if [ -z "$KEY_PRIVATE" ]; then
         umask 077
-        $KEY_PRIVATE=$(wg genkey)
-        $KEY_PUBLIC=$(wg pubkey < "$KEY_PRIVATE")
+        KEY_PRIVATE=$(wg genkey)
+        KEY_PUBLIC=$(echo "$KEY_PRIVATE" | wg pubkey)
     else
-        $KEY_PUBLIC=$(wg pubkey < "$KEY_PRIVATE")
+        # Use provided private key to generate public key
+        KEY_PUBLIC=$(echo "$KEY_PRIVATE" | wg pubkey)
     fi
 
-
+    # Save keys to files
     echo "$KEY_PRIVATE" > "$PRI_FILE"
     echo "$KEY_PUBLIC" > "$PUB_FILE"
 
-else 
+else
 
-    if [ ! "$KEY_PRIVATE" == $(cat "$PRI_FILE") ]; then
+    # Check if provided keys differ from stored keys
+    if [ "$KEY_PRIVATE" != "$(cat "$PRI_FILE")" ]; then
         echo "$KEY_PRIVATE" > "$PRI_FILE"
+    fi
 
-    elif [ ! "$KEY_PUBLIC" == $(cat "$PUB_FILE") ]; then
+    if [ "$KEY_PUBLIC" != "$(cat "$PUB_FILE")" ]; then
         echo "$KEY_PUBLIC" > "$PUB_FILE"
     fi
 
