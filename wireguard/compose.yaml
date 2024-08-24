@@ -1,15 +1,14 @@
 services:
   wireguard:
     build: .
-    # network_mode: "host"
     environment:
-      SERVER_PORT: 51820
+      - CLIENT_KEY: "cB8lMXbSZbYzVMvRYvZ7nlQJ6SagUd33egI6FS/gMHI="
+      - KEY_PRIVATE:
+      - KEY_PUBLIC:
     ports:
      - "51820:51820/udp"
     volumes:
       - ./config:/etc/wireguard
-    secrets:
-      - client_pub_key
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -18,8 +17,3 @@ services:
      - net.ipv4.ip_forward=1
      - net.ipv6.conf.all.forwarding=1
     privileged: true
-
-secrets:
-  client_pub_key:
-    file: ./client-public-key.txt
-

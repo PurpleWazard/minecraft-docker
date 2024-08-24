@@ -1,36 +1,46 @@
 #!/bin/bash
 
 CONFIG_DIR="/etc/wireguard"
-PRIVATE_KEY_FILE="$CONFIG_DIR/privatekey"
-PUBLIC_KEY_FILE="$CONFIG_DIR/publickey"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
-WG_LOG_FILE="/etc/wireguard/wireguard.log"
-CLIENT_KEY=$(cat /run/secrets/client_pub_key)
+PUB_FILE="$CONFIG_DIR/public"
+PRI_FILE="$CONFIG_DIR/private"
+KEY_PUBLIC="$KEY_PUBLIC"
+KEY_PRIVATE="$KEY_PRIVATE"
 
-# Check if CLIENT_KEY is set
-if [ -z "$CLIENT_KEY" ]; then
-    echo "CLIENT_KEY is not set. Exiting."
-    exit 1
+CLIENT_KEY="$CLIENT_KEY"
+
+
+
+if [ ! -f "$PUB_FILE" ] && [ ! -f "$PRI_FILE" ]; then
+
+    if [ -z "$KEY_PRIVATE" ]; then
+        umask 077
+        $KEY_PRIVATE="$(wg genkey)"
+        $KEY_PUBLIC="$(wg pubkey < $KEY_PRIVATE)"
+    else
+        $KEY_PUBLIC="$(wg pubkey < $KEY_PRIVATE)"
+    fi
+
+
+    echo "$KEY_PRIVATE" > "$PRI_FILE"
+    echo "$KEY_PUBLIC" > "$PUB_FILE"
+
+else 
+
+    if [ ! "$KEY_PRIVATE" == $(cat "$PRI_FILE") ]; then
+        echo "$KEY_PRIVATE" > "$PRI_FILE"
+
+    elif [ ! "$KEY_PUBLIC" == $(cat "$PUB_FILE") ]; then
+        echo "$KEY_PUBLIC" > "$PUB_FILE"
+    fi
+
 fi
 
-# Function to generate keys
-generate_keys() {
-    umask 077
-    wg genkey | tee "$PRIVATE_KEY_FILE" | wg pubkey > "$PUBLIC_KEY_FILE"
-}
+    echo "Private key: $KEY_PRIVATE"
+    echo "PUBLIC key: $KEY_PUBLIC"
 
-# Check if the private key exists
-if [ ! -f "$PRIVATE_KEY_FILE" ]; then
-    echo "Generating new WireGuard keys..."
-    generate_keys
-else
-    echo "Using existing WireGuard keys..."
-fi
 
-# Create WireGuard configuration if it doesn't exist
-if [ ! -f "$WG_CONFIG" ]; then
-    echo "Creating WireGuard configuration..."
-    cat <<EOF > "$WG_CONFIG"
+cat <<EOF > "$WG_CONFIG"
 [Interface]
 PrivateKey = $(cat $PRIVATE_KEY_FILE)
 Address = 10.0.0.1/24
@@ -40,9 +50,7 @@ ListenPort = $SERVER_PORT
 PublicKey = $CLIENT_KEY
 AllowedIPs = 10.0.0.2/32
 EOF
-else
-    echo "Using existing WireGuard configuration..."
-fi
+
 
 # Enable IP forwarding
 sysctl -w net.ipv4.ip_forward=1
