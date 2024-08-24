@@ -12,7 +12,7 @@ if [ ! -f "$PUB_FILE" ] || [ ! -f "$PRI_FILE" ]; then
 
     # Generate new keys if private key is not provided
     if [ -z "$KEY_PRIVATE" ]; then
-        umask 077
+        umask 600 
         KEY_PRIVATE=$(wg genkey)
         KEY_PUBLIC=$(echo "$KEY_PRIVATE" | wg pubkey)
     else
@@ -23,25 +23,24 @@ if [ ! -f "$PUB_FILE" ] || [ ! -f "$PRI_FILE" ]; then
     # Save keys to files
     echo "$KEY_PRIVATE" > "$PRI_FILE"
     echo "$KEY_PUBLIC" > "$PUB_FILE"
-
-elif [ -z "$KEY_PUBLIC" ]; then
-    KEY_PUBLIC=$(cat "$PUB_FILE")
-
-elif [ -z "$KEY_PRIVATE" ]; then
-    KEY_PRIVATE=$(cat "$PRI_FILE")
-
-else
-
-    # Check if provided keys differ from stored keys
-    if [ "$KEY_PRIVATE" != "$(cat "$PRI_FILE")" ]; then
-        echo "$KEY_PRIVATE" > "$PRI_FILE"
-    fi
-
-    if [ "$KEY_PUBLIC" != "$(cat "$PUB_FILE")" ]; then
-        echo "$KEY_PUBLIC" > "$PUB_FILE"
-    fi
-
 fi
+
+if [ -z "$KEY_PUBLIC" ] && [ -z "$KEY_PRIVATE" ]; then
+    KEY_PUBLIC=$(cat "$PUB_FILE")
+    KEY_PRIVATE=$(cat "$PRI_FILE")
+fi
+
+
+
+# Check if provided keys differ from stored keys
+if [ "$KEY_PRIVATE" != "$(cat "$PRI_FILE")" ]; then
+    echo "$KEY_PRIVATE" > "$PRI_FILE"
+fi
+
+if [ "$KEY_PUBLIC" != "$(cat "$PUB_FILE")" ]; then
+    echo "$KEY_PUBLIC" > "$PUB_FILE"
+fi
+
 
 echo "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
 echo "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"

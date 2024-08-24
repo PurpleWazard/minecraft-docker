@@ -2,7 +2,7 @@ services:
   wireguard:
     build: .
     environment:
-      - CLIENT_KEY='cB8lMXbSZbYzVMvRYvZ7nlQJ6SagUd33egI6FS/gMHI='
+      - CLIENT_KEY=cB8lMXbSZbYzVMvRYvZ7nlQJ6SagUd33egI6FS/gMHI=
       #  - KEY_PRIVATE=
       #  - KEY_PUBLIC=
     ports:
