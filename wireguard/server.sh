@@ -35,8 +35,10 @@ else
 
 fi
 
-    echo "Private key: $KEY_PRIVATE"
-    echo "PUBLIC key: $KEY_PUBLIC"
+echo "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
+echo "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
+
+echo "client key: $CLIENT_KEY"
 
 
 cat <<EOF > "$WG_CONFIG"
