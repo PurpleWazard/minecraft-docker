@@ -5,6 +5,8 @@ PUB_FILE="$CONFIG_DIR/public"
 PRI_FILE="$CONFIG_DIR/private"
 CLIENT_KEY="$CLIENT_KEY"
 
+echo "$KEY_PRIVATE and $KEY_PUBLIC"
+
 # Check if the key files exist
 if [ ! -f "$PUB_FILE" ] || [ ! -f "$PRI_FILE" ]; then
 
@@ -21,6 +23,12 @@ if [ ! -f "$PUB_FILE" ] || [ ! -f "$PRI_FILE" ]; then
     # Save keys to files
     echo "$KEY_PRIVATE" > "$PRI_FILE"
     echo "$KEY_PUBLIC" > "$PUB_FILE"
+
+elif [ -z "$KEY_PUBLIC" ]; then
+    KEY_PUBLIC=$(cat "$PUB_FILE")
+
+elif [ -z "$KEY_PRIVATE" ]; then
+    KEY_PRIVATE=$(cat "$PRI_FILE")
 
 else
 
