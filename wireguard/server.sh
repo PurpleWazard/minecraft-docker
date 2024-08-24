@@ -15,10 +15,10 @@ if [ ! -f "$PUB_FILE" ] && [ ! -f "$PRI_FILE" ]; then
 
     if [ -z "$KEY_PRIVATE" ]; then
         umask 077
-        $KEY_PRIVATE="$(wg genkey)"
-        $KEY_PUBLIC="$(wg pubkey < $KEY_PRIVATE)"
+        $KEY_PRIVATE=$(wg genkey)
+        $KEY_PUBLIC=$(wg pubkey < "$KEY_PRIVATE")
     else
-        $KEY_PUBLIC="$(wg pubkey < $KEY_PRIVATE)"
+        $KEY_PUBLIC=$(wg pubkey < "$KEY_PRIVATE")
     fi
 
 
@@ -42,7 +42,7 @@ fi
 
 cat <<EOF > "$WG_CONFIG"
 [Interface]
-PrivateKey = $(cat $PRIVATE_KEY_FILE)
+PrivateKey = $(cat "$KEY_PRIVATE")
 Address = 10.0.0.1/24
 ListenPort = 51820
 
@@ -59,13 +59,7 @@ sysctl -w net.ipv6.conf.all.forwarding=1
 # Start the WireGuard interface
 wg-quick up wg0
 
-# Create log file if it doesn't exist
-if [ ! -f "$WG_LOG_FILE" ]; then
-    touch "$WG_LOG_FILE"
-    echo "this is the log file" >> "$WG_LOG_FILE"
-fi
-
-echo "server public key: $(cat $PUBLIC_KEY_FILE)"
+echo "server public key: $(cat $KEY_PUBLIC)"
 
 # Keep the container running
 tail -f /dev/null
