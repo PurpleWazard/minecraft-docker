@@ -44,7 +44,7 @@ cat <<EOF > "$WG_CONFIG"
 [Interface]
 PrivateKey = $(cat $PRIVATE_KEY_FILE)
 Address = 10.0.0.1/24
-ListenPort = $SERVER_PORT
+ListenPort = 51820
 
 [Peer]
 PublicKey = $CLIENT_KEY
