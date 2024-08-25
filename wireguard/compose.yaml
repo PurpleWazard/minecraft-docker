@@ -1,19 +1,21 @@
 services:
   wireguard:
+    container_name: wireguardVPN
     build: .
+    network_mode: "host"
     environment:
       - CLIENT_KEY=cB8lMXbSZbYzVMvRYvZ7nlQJ6SagUd33egI6FS/gMHI=
       #  - KEY_PRIVATE=
       #  - KEY_PUBLIC=
-    ports:
-     - "51820:51820/udp"
+    #ports:
+    # - "51820:51820/udp"
     volumes:
       - ./config:/etc/wireguard
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    sysctls:
-     - net.ipv4.ip_forward=1
-     - net.ipv6.conf.all.forwarding=1
+    #sysctls:
+    # - net.ipv4.ip_forward=1
+    # - net.ipv6.conf.all.forwarding=1
     privileged: true

@@ -64,9 +64,17 @@ EOF
 sysctl -w net.ipv4.ip_forward=1
 sysctl -w net.ipv6.conf.all.forwarding=1
 
+# Set up NAT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# Ensure forwarding rules are in place (if needed)
+iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o wg0 -j ACCEPT
+
+
 # Start the WireGuard interface
 wg-quick up wg0
 
 # Keep the container running
-tail -f /dev/null
+sleep inifinity
 
