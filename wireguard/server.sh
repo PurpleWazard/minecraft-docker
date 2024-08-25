@@ -71,10 +71,10 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i wg0 -o eth0 -j ACCEPT
 iptables -A FORWARD -i eth0 -o wg0 -j ACCEPT
 
-
+ip link delete wg0 || true
 # Start the WireGuard interface
 wg-quick up wg0
 
 # Keep the container running
-sleep inifinity
+sleep infinity
 

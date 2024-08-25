@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && \
-    apt-get install -y wireguard-tools procps iproute2 && \
+    apt-get install -y wireguard-tools iptables procps iproute2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
