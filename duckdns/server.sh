@@ -11,7 +11,7 @@ fi
 
 while true; do
     output=$(curl -sS "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip=")
-    echo "$output"
+    echo "$output --- $(date)"
     sleep ${INTERVAL}
 done
 
