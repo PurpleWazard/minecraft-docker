@@ -8,3 +8,5 @@ while true; do
     curl "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip="
     sleep ${INTERVAL}
 done
+
+exit 0
