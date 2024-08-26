@@ -10,7 +10,7 @@ if [ -z "$DOMAIN" ] || [ -z "$TOKEN" ] || [ -z "$INTERVAL" ]; then
 fi
 
 while true; do
-    output=$(curl "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip=")
+    output=$(curl -sS "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip=")
     echo "$output"
     sleep ${INTERVAL}
 done
