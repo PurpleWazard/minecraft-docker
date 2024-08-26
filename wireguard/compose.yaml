@@ -3,10 +3,8 @@ services:
     container_name: wireguardVPN
     build: .
     network_mode: "host"
-    environment:
-      - CLIENT_KEY=
-      #  - KEY_PRIVATE=
-      #  - KEY_PUBLIC=
+    env_file:
+      - path: ./env
     #ports:
     # - "51820:51820/udp"
     volumes:
