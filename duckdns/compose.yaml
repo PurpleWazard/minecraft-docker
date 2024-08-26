@@ -2,8 +2,6 @@ services:
   duckdns:
     container_name: duckdns
     build: .
-    environment:
-      - DOMAIN=
-      - TOKEN=
-      - INTERVAL=300
+    env_file:
+      - .env
     restart: always
