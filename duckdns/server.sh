@@ -4,13 +4,14 @@ echo "$DOMAIN"
 echo "$TOKEN"
 echo "$INTERVAL"
 
-if [ -n "$DOMAIN" ] || [ -n "$TOKEN" ] || [ -n "$INTERVAL" ]; then
+if [ -z "$DOMAIN" ] || [ -z "$TOKEN" ] || [ -z "$INTERVAL" ]; then
     echo "not all env vars are set .. exiting"
     exit 1
 fi
 
 while true; do
-    curl "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip="
+    output=$(curl "https://www.duckdns.org/update?domains=${DOMAIN}&token=${TOKEN}&ip=")
+    echo "$output"
     sleep ${INTERVAL}
 done
 
