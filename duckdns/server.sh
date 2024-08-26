@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "$DOMAIN"
+echo "$TOKEN"
+echo "$INTERVAL"
+
 if [ -n "$DOMAIN" ] || [ -n "$TOKEN" ] || [ -n "$INTERVAL" ]; then
     echo "not all env vars are set .. exiting"
     exit 1
