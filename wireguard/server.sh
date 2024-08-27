@@ -75,8 +75,17 @@ ip link delete wg0 || true
 # Start the WireGuard interface
 wg-quick up wg0
 
+clear
+
 while true; do
     echo -ne "$(wg show)\r"
+    echo ""
+
+    echo -ne "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
+    echo -ne "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
+    echo -ne "client key: $CLIENT_KEY"
+
+    echo ""
     sleep 1
 done
 
