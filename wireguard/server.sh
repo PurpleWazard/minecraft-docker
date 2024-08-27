@@ -75,6 +75,8 @@ ip link delete wg0 || true
 # Start the WireGuard interface
 wg-quick up wg0
 
-# Keep the container running
-sleep infinity
+while true; do
+    echo -ne "$(wg show)\r"
+    sleep 1
+done
 
