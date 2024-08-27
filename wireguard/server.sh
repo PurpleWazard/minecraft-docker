@@ -78,6 +78,7 @@ wg-quick up wg0
 clear
 
 while true; do
+    clear
     echo -ne "$(wg show)\r"
     echo ""
 
