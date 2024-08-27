@@ -84,11 +84,12 @@ while true; do
 
     tput home
     tput clear
+    echo ""
     echo  "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
     echo  "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
     echo  "client key: $CLIENT_KEY"
     echo ""
-    tput cpu 4 0
+    tput cup 4 0
     echo "$(wg show)"
     sleep 1
 done
