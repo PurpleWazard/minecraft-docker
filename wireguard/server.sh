@@ -4,6 +4,8 @@ WG_CONFIG="$CONFIG_DIR/wg0.conf"
 PUB_FILE="$CONFIG_DIR/public"
 PRI_FILE="$CONFIG_DIR/private"
 
+PRE_KEY_FILE="$CONFIG_DIR/PRE_KEY"
+
 
 CLIENT_KEY="$CLIENT_KEY"
 CLIENT_KEY_FILE="$CONFIG_DIR/client_pub"
@@ -49,15 +51,6 @@ fi
 
 echo "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
 echo "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
-
-
-
-
-
-
-
-
-
 
 
 echo "$CLIENT_PRI_KEY and $CLIENT_KEY"
@@ -125,6 +118,17 @@ elif [ "$CLIENT_PRI_KEY" != $(cat "$CLIENT_PRI_FILE") ]; then
 fi
 
 
+if [ -z "$PRE_KEY" ];then
+    if [ ! -f "$PRE_KEY_FILE" ]; then
+    PRE_KEY=$(wg genkey)
+    else
+        PRE_KEY=$(cat "$PRE_KEY_FILE")
+    fi
+else
+    echo "$PRE_KEY" > "$PRE_KEY_FILE"
+fi
+
+
 #server
 cat <<EOF > "$WG_CONFIG"
 [Interface]
@@ -136,6 +140,7 @@ $SERVER_DNS
 [Peer]
 PublicKey = $CLIENT_KEY
 AllowedIPs = 10.0.0.2/32
+PresharedKey = $PRE_KEY
 EOF
 
 
@@ -152,6 +157,7 @@ $CLIENT_DNS
 PublicKey = $KEY_PUBLIC
 Endpoint = $ENDPOINT:$SERVER_PORT
 AllowedIPs = $ALLOWEDIPS
+PresharedKey = $PRE_KEY
 $KEEPALIVE
 EOF
 
