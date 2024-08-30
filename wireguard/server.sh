@@ -119,13 +119,16 @@ fi
 
 
 if [ -z "$PRE_KEY" ];then
+
     if [ ! -f "$PRE_KEY_FILE" ]; then
     PRE_KEY=$(wg genkey)
+    echo $PRE_KEY > $PRE_KEY_FILE
     else
         PRE_KEY=$(cat "$PRE_KEY_FILE")
     fi
+
 else
-    echo "$PRE_KEY" > "$PRE_KEY_FILE"
+    echo $PRE_KEY > $PRE_KEY_FILE
 fi
 
 
