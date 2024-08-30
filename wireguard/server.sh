@@ -3,7 +3,12 @@ CONFIG_DIR="/etc/wireguard"
 WG_CONFIG="$CONFIG_DIR/wg0.conf"
 PUB_FILE="$CONFIG_DIR/public"
 PRI_FILE="$CONFIG_DIR/private"
+
+
 CLIENT_KEY="$CLIENT_KEY"
+CLIENT_KEY_FILE="$CONFIG_DIR/client_pub"
+CLIENT_PRI_FILE="$CONFIG_DIR/client_pri"
+CLIENT_CONFIG="$CONFIG_DIR/client-config.conf"
 
 echo "$KEY_PRIVATE and $KEY_PUBLIC"
 
@@ -45,19 +50,55 @@ fi
 echo "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
 echo "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
 
-echo "client key: $CLIENT_KEY"
+
+if [ -n "$CLIENT_KEY" ] && [ -n "$CONFIG_PRI_KEY"]; then
+    CLIENT_PRI_KEY=$(wg genkey)
+    CLIENT_KEY=$(echo $CLIENT_PRI_KEY | wg pubkey)
+fi
+
+if [ ! -f "$CLIENT_KEY_FILE" ]; then
+    echo $CLIENT_KEY > $CLIENT_KEY_FILE
+elif [ ! -f "$CLIENT_PRI_FILE" ]; then
+    echo $CLIENT_PRI_KEY > $CLIENT_PRI_FILE
+fi
+
+if [ "$CLIENT_KEY" != $(cat "$CLIENT_KEY_FILE") ]; then
+    echo $CLIENT_KEY > $CLIENT_KEY_FILE
+elif [ "$CLIENT_PRI_KEY" != $(cat "$CLIENT_PRI_FILE") ]; then
+    echo $CLIENT_PRI_KEY > $CLIENT_PRI_FILE
+fi
 
 
+#server
 cat <<EOF > "$WG_CONFIG"
 [Interface]
 PrivateKey = $KEY_PRIVATE
 Address = 10.0.0.1/24
-ListenPort = 51820
+ListenPort = $SERVER_PORT
+$SERVER_DNS
 
 [Peer]
 PublicKey = $CLIENT_KEY
 AllowedIPs = 10.0.0.2/32
 EOF
+
+
+
+# client
+cat <<EOF > "$CLIENT_CONFIG"
+[Interface]
+PrivateKey = $CLIENT_PRI_KEY
+Address = 10.0.0.2/24
+$CLIENT_DNS
+
+
+[Peer]
+PublicKey = $KEY_PUBLIC
+Endpoint = $ENDPOINT:$SERVER_PORT
+AllowedIPs = $ALLOWEDIPS
+$KEEPALIVE
+EOF
+
 
 
 # Enable IP forwarding
