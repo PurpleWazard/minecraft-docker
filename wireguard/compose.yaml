@@ -9,7 +9,7 @@ services:
     # - "51820:51820/udp"
     volumes:
       - ./config:/etc/wireguard
-    restart: unless-stopped
+    restart: always
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
