@@ -8,7 +8,7 @@ PRI_FILE="$CONFIG_DIR/private"
 CLIENT_KEY="$CLIENT_KEY"
 CLIENT_KEY_FILE="$CONFIG_DIR/client_pub"
 CLIENT_PRI_FILE="$CONFIG_DIR/client_pri"
-CLIENT_CONFIG="$CONFIG_DIR/client-config.conf"
+CLIENT_CONFIG="$CONFIG_DIR/client.conf"
 
 echo "$KEY_PRIVATE and $KEY_PUBLIC"
 
