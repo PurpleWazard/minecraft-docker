@@ -172,7 +172,7 @@ ip link delete wg0 || true
 # Start the WireGuard interface
 wg-quick up wg0
 
-sleep infinitely
+sleep 99999999
 
 # export TERM=xterm-256color
 #
