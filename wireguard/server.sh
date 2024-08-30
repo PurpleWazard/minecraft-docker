@@ -51,16 +51,72 @@ echo "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
 echo "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
 
 
-if [ -n "$CLIENT_KEY" ] && [ -n "$CONFIG_PRI_KEY"]; then
-    CLIENT_PRI_KEY=$(wg genkey)
-    CLIENT_KEY=$(echo $CLIENT_PRI_KEY | wg pubkey)
+
+
+
+
+
+
+
+
+
+echo "$CLIENT_PRI_KEY and $CLIENT_KEY"
+
+# Check if the key files exist
+if [ ! -f "$CLIENT_KEY_FILE" ] || [ ! -f "$CLIENT_PRI_FILE" ]; then
+
+    # Generate new keys if private key is not provided
+    if [ -z "$CLIENT_PRI_KEY" ]; then
+        umask 600 
+        CLIENT_PRI_KEY=$(wg genkey)
+        CLIENT_KEY=$(echo "$CLIENT_PRI_KEY" | wg pubkey)
+    else
+        # Use provided private key to generate public key
+        CLIENT_KEY=$(echo "$CLIENT_PRI_KEY" | wg pubkey)
+    fi
+
+    # Save keys to files
+    echo "$CLIENT_PRI_KEY" > "$CLIENT_PRI_FILE"
+    echo "$CLIENT_KEY" > "$CLIENT_KEY_FILE"
 fi
 
-if [ ! -f "$CLIENT_KEY_FILE" ]; then
-    echo $CLIENT_KEY > $CLIENT_KEY_FILE
-elif [ ! -f "$CLIENT_PRI_FILE" ]; then
-    echo $CLIENT_PRI_KEY > $CLIENT_PRI_FILE
+if [ -z "$CLIENT_KEY" ] && [ -z "$CLIENT_PRI_KEY" ]; then
+    CLIENT_KEY=$(cat "$CLIENT_KEY_FILE")
+    CLIENT_PRI_KEY=$(cat "$CLIENT_PRI_FILE")
 fi
+
+
+
+# Check if provided keys differ from stored keys
+if [ "$CLIENT_PRI_KEY" != "$(cat "$CLIENT_PRI_FILE")" ]; then
+    echo "$CLIENT_PRI_KEY" > "$CLIENT_PRI_FILE"
+fi
+
+if [ "$CLIENT_KEY" != "$(cat "$CLIENT_KEY_FILE")" ]; then
+    echo "$CLIENT_KEY" > "$CLIENT_KEY_FILE"
+fi
+
+
+if [ -z "$CLIENT_KEY" ] || [ -z "$CONFIG_PRI_KEY"]; then
+
+    if [ ! -f "$CLIENT_PRI_FILE" ] && [ -z "$CLIENT_PRI_KEY" ]; then
+
+        CLIENT_PRI_KEY=$(wg genkey)
+        echo $CLIENT_PRI_KEY > $CLIENT_PRI_FILE
+
+    elif [ ! -f "$CLIENT_KEY_FILE" ] && [ -z "$CLIENT_KEY" ]; then
+
+        echo $CLIENT_KEY > $CLIENT_KEY_FILE
+        CLIENT_KEY=$(echo $CLIENT_PRI_KEY | wg pubkey)
+
+    fi
+
+else 
+
+    echo "$(cat "$CLIENT_PRI_FILE")"
+
+fi
+
 
 if [ "$CLIENT_KEY" != $(cat "$CLIENT_KEY_FILE") ]; then
     echo $CLIENT_KEY > $CLIENT_KEY_FILE
@@ -116,22 +172,24 @@ ip link delete wg0 || true
 # Start the WireGuard interface
 wg-quick up wg0
 
-export TERM=xterm-256color
+sleep infinitely
 
-
-tput clear
-
-while true; do
-
-    tput home
-    tput clear
-    echo ""
-    echo  "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
-    echo  "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
-    echo  "client key: $CLIENT_KEY"
-    tput cup 4 0
-    echo""
-    echo "$(wg show)"
-    sleep 1
-done
+# export TERM=xterm-256color
+#
+#
+# tput clear
+#
+# while true; do
+#
+#     tput home
+#     tput clear
+#     echo ""
+#     echo  "Private key: $KEY_PRIVATE and file: $(cat $PRI_FILE)"
+#     echo  "public key: $KEY_PUBLIC and file: $(cat $PUB_FILE)"
+#     echo  "client key: $CLIENT_KEY"
+#     tput cup 4 0
+#     echo""
+#     echo "$(wg show)"
+#     sleep 1
+# done
 
