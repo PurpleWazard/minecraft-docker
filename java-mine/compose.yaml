@@ -10,8 +10,8 @@ services:
       SERVER_NAME: "Mayhem"
       DIFFICULTY: "hard"
       MAX_PLAYERS: "30"
-      ALLOW_NETHER: false
-      ENABLE_COMMAND_BLOCK: true
+      ALLOW_NETHER: "false"
+      ENABLE_COMMAND_BLOCK: "true"
       VIEW_DISTANCE: "10"
       SIMULATION_DISTANCE: "10"
       PLUGINS: |
