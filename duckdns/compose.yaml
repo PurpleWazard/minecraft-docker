@@ -1,7 +1,0 @@
-services:
-  duckdns:
-    container_name: duckdns
-    build: .
-    env_file:
-      - .env
-    restart: always
