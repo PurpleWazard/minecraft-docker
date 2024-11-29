@@ -1,0 +1,26 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    restart: always
+    container_name: "mcserver"
+    environment:
+      TYPE: "PAPER"
+      EULA: "TRUE"
+      MOTD: "                \u00A75\u00A7n\u00A7lCHAOS YIPPE!11!!\u00A7r\n           \u00A74nether is disabled for now."
+      SERVER_NAME: "Mayhem"
+      DIFFICULTY: "hard"
+      MAX_PLAYERS: "30"
+      ALLOW_NETHER: "false"
+      ENABLE_COMMAND_BLOCK: "true"
+      VIEW_DISTANCE: "10"
+      SIMULATION_DISTANCE: "10"
+      PLUGINS: |
+        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+        https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
+    volumes:
+      - ./minecraftserver:/data
+    ports:
+      - 25565:25565/tcp
+      - 19132:19132/udp
+    stdin_open: true
+    tty: true
