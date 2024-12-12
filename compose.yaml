@@ -28,3 +28,10 @@ services:
       - 19132:19132/udp
     stdin_open: true
     tty: true
+
+
+  playit:
+    image: ghcr.io/playit-cloud/playit-agent:0.15
+    network_mode: host
+    environment:
+    - SECRET_KEY=a7a6572d35462e33ac7306cc269a54bfa9ef3f01b893462d6ca6a62a23051aa7
