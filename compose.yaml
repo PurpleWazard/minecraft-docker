@@ -21,8 +21,6 @@ services:
         https://hangarcdn.papermc.io/plugins/Artillex-Studios/AxGraves/versions/1.17.0/PAPER/AxGraves-1.17.0.jar
         https://hangarcdn.papermc.io/plugins/ViaVersion/ViaVersion/versions/5.2.0/PAPER/ViaVersion-5.2.0.jar
         https://hangarcdn.papermc.io/plugins/pop4959/Chunky/versions/1.4.28/PAPER/Chunky-Bukkit-1.4.28.jar
-        # https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
-        # https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
         https://github.com/TCPShield/RealIP/releases/download/2.8.1/TCPShield-2.8.1.jar
     volumes:
       - ./minecraftserver:/data
